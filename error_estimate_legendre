@@ -1,0 +1,127 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath} % For advanced math symbols
+\usepackage{amsfonts} % For math fonts
+\usepackage{amssymb} % Additional math symbols
+\usepackage{geometry} % To adjust page margins
+\usepackage{hyperref} % For clickable references
+\usepackage{xcolor} % For colored links
+
+% Page setup
+\geometry{a4paper, margin=1in}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=cyan,
+}
+
+\title{Powerful Property of Gaussian Quadrature: Fast Convergence}
+\author{Reeshad Mohammed}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Properties of Gaussian-Legendre Polynomials}
+
+In order to prove the error estimate for Gaussian-Legendre Polynomials, we need to use the properties below, which are in the Brief Overview and Developing Gaussian Quadrature sections. Note that Gaussian-Legendre Polynomials have the conditions that $[a, b] = [-1, 1]$, so the below is the Gaussian-Legendre approximation.
+\begin{equation}
+    \int_a^b f(x) \, dx \approx \sum_{i=1}^n w_i f(x_i)
+\end{equation}
+We will denote the right hand side approximation as $G(f)$. 
+We will also use the fact that the weights, $w_i$, are the integral of the Lagrangian from a to b, which is -1 to 1, which was shown in the Developing Gaussian Quadrature Section.
+\begin{equation}
+    w_{i}=\int_{-1}^{1}\prod_{{j=1 \\j \ne i}}^{n} \frac{x-x_{j}}{x_{i}-x_{j}}\,dx
+\end{equation}
+
+
+\section*{Gaussian-Legendre Quadrature Error Estimate}
+
+Let $P_n(x)$ denote the Legendre polynomial of degree n. Let $x_i$ for $i = 1,\dots,n$ be the roots of $P_n(x)$. \\
+We will prove the following.
+Let $f \in C^{2n}[-1,1]$. Then there exists $c \in (-1,1)$ such that
+\begin{equation}
+    \int_{-1}^{1} f(x)dx = G(f) + \frac{f^{(2n)}(c)}{(2n)!}\int_{-1}^{1} P_n^2(x)dx,
+\end{equation}
+where G(f) is
+\begin{equation}
+    G(f) = \sum_{i=1}^n w_i f(x_i)
+\end{equation}
+Notice that G(f) is the same as in the section above.
+
+
+\begin{proof}
+We will use Hermite polynomials to justify the error estimate for Gaussian quadrature. Let $H_{2n-1}(x)$ denote a polynomial of degree $2n - 1$ such that
+\begin{align*}
+    H_{2n-1}(x_i) &= f(x_i) \\
+    H'_{2n-1}(x_i) &= f'(x_i)
+\end{align*}
+From Hermite interpolation, we know such polynomial exists and is unique.
+The difference between $f(x)$ and a Hermite polynomial $H_{n}(x)$ is 
+\begin{equation}
+    f(x) = H_{n}(x) + \frac{f^{(n+1)}(\xi(x))}{(n)!} \prod_{i=1}^{m}(x - x_i)^{k_i}.
+\end{equation}
+for some $\xi(x) \in (a, b)$, where n is the degree of the Hermite polynomial, m is the number of $x_i$ and ${k_i}$ is the known number derivatives of ${x_i}$ for $i = 1, \dots, n$ \\
+For $H_{2n-1}(x)$, we know two derivatives at each $x_i$ for $i = 1, \dots, n$, so $k = 2$, and the following holds for some $\xi(x) \in (a, b)$
+\begin{equation}
+    f(x) = H_{2n-1}(x) + \frac{f^{(2n)}(\xi)}{(2n)!} \prod_{i=1}^{n}(x - x_i)^2
+\end{equation}
+We can see that $(x - x_1)\dots(x - x_n)$ is $P_n(x)$ with roots $x_i$ for $i \in 1,\dots,n$. So taking the integral from -1 to 1 of the equation above yields
+\begin{equation}
+    \int_{-1}^{1} f(x)dx = \int_{-1}^{1} H_{2n-1}(x)dx + \int_{-1}^{1}\frac{f^{(2n)}(\xi)}{(2n)!} P_n^2(x)dx
+\end{equation}
+From the 2n-1 degree precision of the Gaussian Quadrature, we get the following
+\begin{equation}
+    \int_{-1}^{1} H_{2n-1}(x)dx = G(H_{2n-1})
+\end{equation}
+Then using the definition of G, we get
+\begin{equation}
+    G(H_{2n-1}) = \sum_{i=1}^{n} H_{2n-1}(x_i)
+\end{equation}
+Lastly, since $H_{2n-1}(x)$ interpolates $f(x)$, the following summation holds
+\begin{equation}
+   \sum_{i=1}^{n} H_{2n-1}(x_i) = \sum_{i=1}^{n} f(x_i) = G(f).
+\end{equation}
+Combining the previous three equations yields
+\begin{equation}
+    \int_{-1}^{1} H_{2n-1}(x)dx = G(f)
+\end{equation}
+Since $P_n^2(x)$ is nonnegative, we can use Mean Value Theorem to conclude
+\begin{equation}
+    \int_{-1}^{1} \frac{f^{(2n)}(\xi(x))}{(2n)!} P_n^2(x)dx = \frac{f^{(2n)}(c)}{(2n)!} \int_{-1}^{1} P_n^2(x)dx
+\end{equation}
+for some $c \in (-1,1)$. 
+\\
+Substituting the right hand sides of the two equations above, we can conclude
+\begin{equation}
+    \int_{-1}^{1} f(x)dx = G(f) + \frac{f^{(2n)}(c)}{(2n)!}\int_{-1}^{1} P_n^2(x)dx
+\end{equation}
+completing the proof.
+
+\end{proof}
+
+\section{Implications of Error Estimate on When To Use Gaussian Quadrature}
+As we can see from the error estimate, Gaussian-Legendre Quadrature has a strong order of convergence as sene with the inclusion of the factorial term that grows quickly as well as the integral of the squared Legendre- polynomial having a strong order of convergence. 
+\\
+\\
+The main conditions are $f \in C^{2n}[-1,1]$ and the integral being from -1 to 1.
+\\
+\\
+The proof above generalizes to Gaussian Quadrature on [a,b], so the second condition is not much of an issue with the following result where w(x) is no longer equal to 1.
+\\
+\\
+Note that the $P_n(x)$ used below is more restrictive than the Legendre polynomial. For more robust analysis on this general form, see page 22 of this source on page 22:
+\\
+(https://www.math.umd.edu/~mariakc/AMSC466/LectureNotes/quadrature.pdf)
+
+\begin{equation}
+    \int_a^b f(x)w(x)dx = Q(f) + \frac{f^{(2n)}(c)}{(2n)!} \int_a^b p_n^2(x)w(x)dx
+\end{equation}
+Then it follows in general that the extremely strong order of convergence for Gaussian Quadratures, including Gaussian-Legendre Quadratures, can be taken advantage of as long as we have highly smooth functions.
+\\
+\\
+In the experimental section, we will try a variety of functions to see how Gaussian Quadrature performs relative to other Quadratures such as Trapezoidal Rule.
+\\
+\\
+Based on the theoretical results above, for smooth functions, we should see Gaussian Quadrature dominates most quadratures.
+
+\end{document}
