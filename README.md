@@ -1,7 +1,7 @@
 - [X] implemented gaussian quadrature
-- [ ] Convergence - theoretical vs expiremental
-- [ ] Figures - collection of Legendre Nodes, and polynomials, example mapping them over simple functions like cos
-- [ ] Comparison to one or two other quadratures
+- [X] Figures - collection of Legendre Nodes, and polynomials, example mapping them over simple functions like cos
+- [X] Comparison to one or two other quadratures
+- [ ] Convergence - theoretical vs experimental (We have the data for this, we just need to do it)
 - [ ] Chebyshev-Gauss quadrature - implement Chebyshev weights and do comparisons 
 - [ ] Add results to the Latex
 - [ ] Bibliography for Latex
