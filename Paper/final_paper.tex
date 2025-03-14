@@ -171,18 +171,62 @@ Resulting in a formula of:
 
 \section{Comparison of Quadrature}
 
-\subsection{Composite Trapezoid Rule MATLAB Code}
+% \subsection{Composite Trapezoid Rule MATLAB Code}
 
-\lstinputlisting[language=Matlab]{composite_trapezoid_rule.m}
+% \lstinputlisting[language=Matlab]{composite_trapezoid_rule.m}
 
-\subsection{Composite Simpson's Rule MATLAB Code}
+% \subsection{Composite Simpson's Rule MATLAB Code}
 
-\lstinputlisting[language=Matlab]{composite_simpsons_rule.m}
+% \lstinputlisting[language=Matlab]{composite_simpsons_rule.m}
 
-\subsection{Gauss-Legendre Quadrature MATLAB Code}
+% \subsection{Gauss-Legendre Quadrature MATLAB Code}
 
-\lstinputlisting[language=Matlab]{gauss_legendre_quadrature.m}
-\lstinputlisting[language=Matlab]{GW_nodes_weights.m}
+% \lstinputlisting[language=Matlab]{gauss_legendre_quadrature.m}
+% \lstinputlisting[language=Matlab]{GW_nodes_weights.m}
+
+We applied Trapezoid Rule, Simpson's Rule, and Gaussian Quadrature to a series of five functions for the purpose of
+analysing and comparing the approximations. For each quadrature and function, we calculated the difference between
+the approximation and the analytical solution, as well as the order of convergence. Below is a table of our results.
+
+\begin{center}
+	\begin{footnotesize}
+	\begin{tabular}{| l | l | r | r | r | r |}
+		\hline
+		Function & Method & Ending Accuracy & Terminated & Order of Convergence\\
+		\hline
+		$f(x) = \frac{1}{1 + 1000(x - 0.5)^2}$ & Trapezoid Rule & a & a & a\\
+		\hline
+		$f(x) = \frac{1}{1 + 1000(x - 0.5)^2}$ & Simpson's Rule & a & a & a\\
+		\hline
+		$f(x) = \frac{1}{1 + 1000(x - 0.5)^2}$ & Gaussian Quadrature & a & a & a\\
+		\hline
+		$f(x) = \frac{1}{x}\sqrt{\frac{1 + x}{1 - x}}\log(\frac{2x^2 + 2x + 1}{2x^2 - 2x + 1})$ & Trapezoid Rule & a & a & a\\
+		\hline
+		$f(x) = \frac{1}{x}\sqrt{\frac{1 + x}{1 - x}}\log(\frac{2x^2 + 2x + 1}{2x^2 - 2x + 1})$ & Simpson's Rule & a & a & a\\
+		\hline
+		$f(x) = \frac{1}{x}\sqrt{\frac{1 + x}{1 - x}}\log(\frac{2x^2 + 2x + 1}{2x^2 - 2x + 1})$ & Gaussian Quadrature & a & a & a\\
+		\hline
+		$f(x) = \sqrt{|x|}$ & Trapezoid Rule & a & a & a\\
+		\hline
+		$f(x) = \sqrt{|x|}$ & Simpson's Rule & a & a & a\\
+		\hline
+		$f(x) = \sqrt{|x|}$ & Gaussian Quadrature & a & a & a\\
+		\hline
+		$f(x) = \frac{1}{1 + x^2}$ & Trapezoid Rule & a & a & a\\
+		\hline
+		$f(x) = \frac{1}{1 + x^2}$ & Simpson's Rule & a & a & a\\
+		\hline
+		$f(x) = \frac{1}{1 + x^2}$ & Gaussian Quadrature & a & a & a\\
+		\hline
+		$f(x) = \cos x$ & Trapezoid Rule & a & a & a\\
+		\hline
+		$f(x) = \cos x$ & Simpson's Rule & a & a & a\\
+		\hline
+		$f(x) = \cos x$ & Gaussian Quadrature & a & a & a\\
+		\hline
+	\end{tabular}
+	\end{footnotesize}
+\end{center}
 
 \section{Order of Convergence}
 
