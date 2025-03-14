@@ -7,6 +7,7 @@
 \usepackage{listings} % For displaying code files
 \usepackage{parskip} % Skip paragraph indention
 \usepackage{xcolor} % For colored links
+\usepackage{graphicx}
 
 % Page setup
 \geometry{a4paper, margin=1in}
@@ -19,7 +20,7 @@
 \title{Investigation into Gaussian Quadrature}
 \author{
     Jack Deye\\
-    email@g.ucla.edu
+    jackdeye@g.ucla.edu
     \and
     Zachary Diamond\\
     zacharydiamond@g.ucla.edu
@@ -53,31 +54,31 @@ Additionally, we will compare the theory of Guassian Quadrature convergence to e
 The Trapezoid Rule is developed using Lagrange polynomials and equally spaced nodes. Consider $\int_a^b f(x)dx$. When we replace $f(x)$
 with the first Lagrange polynomial approximation, with $x_0 = a$ and $x_1 = b$, and integrate, we get
 \begin{align*}
-    \frac{(x_1 - x_0)}{2}[f(x_0) + f(x_1)] - \frac{(x_1 - x_0)^3}{12}f''(\xi)
+	\frac{(x_1 - x_0)}{2}[f(x_0) + f(x_1)] - \frac{(x_1 - x_0)^3}{12}f''(\xi)
 \end{align*}
 Where $\xi \in (x_0, x_1)$. Naturally, we can set $h = x_1 - x_0$, resulting in the Trapezoid Rule:
 \begin{align*}
-    \int_{x_0}^{x_1}f(x)dx = \frac{h}{2}[f(x_0) + f(x_1)] - \frac{h^3}{12}f''(\xi)
+	\int_{x_0}^{x_1}f(x)dx = \frac{h}{2}[f(x_0) + f(x_1)] - \frac{h^3}{12}f''(\xi)
 \end{align*}
 It is clear that this approach only works well on quite small intervals; so, we develop the Composite Trapezoid Rule. The Composite Trapezoid Rule
 applies the Trapezoid Rule on $n$ subintervals within the initial interval. The formula is as follows:
 \begin{align*}
-    \int_{x_0}^{x_n}f(x)dx = \frac{h}{2}[f(x_0) + 2\sum_{j=1}^{n-1}f(x_j) + f(x_n)] - \frac{x_n - x_0}{12}h^2f''(\mu)
+	\int_{x_0}^{x_n}f(x)dx = \frac{h}{2}[f(x_0) + 2\sum_{j=1}^{n-1}f(x_j) + f(x_n)] - \frac{x_n - x_0}{12}h^2f''(\mu)
 \end{align*}
 Where $\mu \in (x_0, x_n)$.
 
 \subsection{Simpson's Rule}
-Similar to the Trapezoid Rule, Simpson's Rule is also developed using Lagrange polynomials. Simpson's Rule differs in that 
+Similar to the Trapezoid Rule, Simpson's Rule is also developed using Lagrange polynomials. Simpson's Rule differs in that
 it uses the second Lagrange polynomial. Consider $\int_{a}^{b} f(x)dx$. We set $x_0 = a$, $x_1 = a + h$, and $x_2 = b$, where $h = \frac{b - a}{2}$.
 Now, when we replace $f(x)$ with the second Lagrange polynomial approximation and integrate, we get Simpson's Rule:
 \begin{align*}
-    \int_{x_0}^{x_2}f(x)dx = \frac{h}{3}[f(x_0) + 4f(x_1) + f(x_2)] - \frac{h^5}{90}f^{(4)}(\xi)
+	\int_{x_0}^{x_2}f(x)dx = \frac{h}{3}[f(x_0) + 4f(x_1) + f(x_2)] - \frac{h^5}{90}f^{(4)}(\xi)
 \end{align*}
 Where $\xi \in (x_0, x_2)$. However, like the Trapezoid Rule, this form only works well on small intervals. The Composite Simpson's Rule is
 developed similarly to the Composite Trapezoid Rule, splitting the interval into $n$ subintervals, where $n$ is an even integer.
 The formula is as follows:
 \begin{align*}
-    \int_{x_0}^{x_n}f(x)dx = \frac{h}{3}[f(x_0) + 2\sum_{j=1}^{\frac{n}{2} - 1}f(x_{2j}) + 4\sum_{j=1}^{\frac{n}{2}}f(x_{2j - 1}) + f(x_n)] - \frac{x_n - x_0}{180}h^4f^{(4)}(\mu)
+	\int_{x_0}^{x_n}f(x)dx = \frac{h}{3}[f(x_0) + 2\sum_{j=1}^{\frac{n}{2} - 1}f(x_{2j}) + 4\sum_{j=1}^{\frac{n}{2}}f(x_{2j - 1}) + f(x_n)] - \frac{x_n - x_0}{180}h^4f^{(4)}(\mu)
 \end{align*}
 Where $\mu \in (x_0, x_n)$.
 
@@ -183,6 +184,19 @@ Resulting in a formula of:
 
 % \lstinputlisting[language=Matlab]{gauss_legendre_quadrature.m}
 % \lstinputlisting[language=Matlab]{GW_nodes_weights.m}
+\begin{figure}[htbp]
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{../images/Evenly_spaced.png} % Replace with the path to your first image
+		\caption{Simpson and Trapezoid, evenly spacing for $\cos x$}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{../images/GuassianQuad.png} % Replace with the path to your second image
+		\caption{Gauss-Legendre node spacing, for $\cos x$}
+	\end{minipage}
+\end{figure}
 
 We applied Trapezoid Rule, Simpson's Rule, and Gaussian Quadrature to a series of five functions for the purpose of
 analysing and comparing the approximations. For each quadrature and function, we calculated the difference between
@@ -190,51 +204,51 @@ the approximation and the analytical solution, as well as the order of convergen
 
 \begin{center}
 	\begin{small}
-	\begin{tabular}{| l | l | p{25mm} | p{17mm} | p{35mm} |}
-		\hline
-		Function & Method & Final Absolute Error & Terminated Early & Order of Convergence\\
-		\hline
-		F1 & Trapezoid Rule & $3.88475 \times 10^{-7}$ & No & Non-Polynomial\\
-		\hline
-		F1 & Simpson's Rule & $2.33869 \times 10^{-5}$ & No & $O(n^{2.32})$\\
-		\hline
-		F1 & Gaussian Quadrature & $7.56489 \times 10^{-6}$ & No & Non-Polynomial\\
-		\hline
-		F2 & Trapezoid Rule & N/A & N/A & N/A\\
-		\hline
-		F2 & Simpson's Rule & N/A & N/A & N/A\\
-		\hline
-		F2 & Gaussian Quadrature & $0.348133$ & No & $O(n^{0.79})$\\
-		\hline
-		F3 & Trapezoid Rule & $0.0015914$ & No & $O(n^{1.22})$\\
-		\hline
-		F3 & Simpson's Rule & $0.000641819$ & No & $O(n^{1.59})$\\
-		\hline
-		F3 & Gaussian Quadrature & $0.000938918$ & No & $O(n^{1.21})$\\
-		\hline
-		F4 & Trapezoid Rule & $6.51042 \times 10^{-6}$ & No & $O(n^{1.69})$\\
-		\hline
-		F4 & Simpson's Rule & $3.77476 \times 10^{-14}$ & No & $O(n^{5.66})$\\
-		\hline
-		F4 & Gaussian Quadrature & $0$ & $n = 14$ & $O(n^{11.36})$\\
-		\hline
-		F5 & Trapezoid Rule & $0.000257028$ & No & $O(n^{1.70})$\\
-		\hline
-		F5 & Simpson's Rule & $-2.64288 \times 10^{-8}$ & No & $O(n^{3.45})$\\
-		\hline
-		F5 & Gaussian Quadrature & $0$ & $n = 12$ & $O(n^{13.02})$\\
-		\hline
-	\end{tabular}
+		\begin{tabular}{| l | l | p{25mm} | p{17mm} | p{35mm} |}
+			\hline
+			Function & Method              & Final Absolute Error      & Terminated Early & Order of Convergence \\
+			\hline
+			F1       & Trapezoid Rule      & $3.88475 \times 10^{-7}$  & No               & Non-Polynomial       \\
+			\hline
+			F1       & Simpson's Rule      & $2.33869 \times 10^{-5}$  & No               & $O(n^{2.32})$        \\
+			\hline
+			F1       & Gaussian Quadrature & $7.56489 \times 10^{-6}$  & No               & Non-Polynomial       \\
+			\hline
+			F2       & Trapezoid Rule      & N/A                       & N/A              & N/A                  \\
+			\hline
+			F2       & Simpson's Rule      & N/A                       & N/A              & N/A                  \\
+			\hline
+			F2       & Gaussian Quadrature & $0.348133$                & No               & $O(n^{0.79})$        \\
+			\hline
+			F3       & Trapezoid Rule      & $0.0015914$               & No               & $O(n^{1.22})$        \\
+			\hline
+			F3       & Simpson's Rule      & $0.000641819$             & No               & $O(n^{1.59})$        \\
+			\hline
+			F3       & Gaussian Quadrature & $0.000938918$             & No               & $O(n^{1.21})$        \\
+			\hline
+			F4       & Trapezoid Rule      & $6.51042 \times 10^{-6}$  & No               & $O(n^{1.69})$        \\
+			\hline
+			F4       & Simpson's Rule      & $3.77476 \times 10^{-14}$ & No               & $O(n^{5.66})$        \\
+			\hline
+			F4       & Gaussian Quadrature & $0$                       & $n = 14$         & $O(n^{11.36})$       \\
+			\hline
+			F5       & Trapezoid Rule      & $0.000257028$             & No               & $O(n^{1.70})$        \\
+			\hline
+			F5       & Simpson's Rule      & $-2.64288 \times 10^{-8}$ & No               & $O(n^{3.45})$        \\
+			\hline
+			F5       & Gaussian Quadrature & $0$                       & $n = 12$         & $O(n^{13.02})$       \\
+			\hline
+		\end{tabular}
 	\end{small}
 \end{center}
 
 \begin{align*}
-	&\text{Integrals:}\\
-	&\text{F1: }f(x) = \frac{1}{1 + 1000(x - 0.5)^2}, \quad [0, 1]\\
-	&\text{F2: }f(x) = \frac{1}{x}\sqrt{\frac{1 + x}{1 - x}}\ln\left(\frac{2x^2 + 2x + 1}{2x^2 - 2x + 1}\right), \quad [-1, 1]\\
-	&\text{F3: }f(x) = \sqrt{|x|}, \quad [-1, 1]\\
-	&\text{F4: }f(x) = \frac{1}{1 + x^2}, \quad [0, 1]\\
-	&\text{F5: }f(x) = \cos(x), \quad [-\frac{\pi}{2}, \frac{\pi}{2}]
+	 & \text{Integrals:}                                                                                                         \\
+	 & \text{F1: }f(x) = \frac{1}{1 + 1000(x - 0.5)^2}, \quad [0, 1]                                                             \\
+	 & \text{F2: }f(x) = \frac{1}{x}\sqrt{\frac{1 + x}{1 - x}}\ln\left(\frac{2x^2 + 2x + 1}{2x^2 - 2x + 1}\right), \quad [-1, 1] \\
+	 & \text{F3: }f(x) = \sqrt{|x|}, \quad [-1, 1]                                                                               \\
+	 & \text{F4: }f(x) = \frac{1}{1 + x^2}, \quad [0, 1]                                                                         \\
+	 & \text{F5: }f(x) = \cos(x), \quad [-\frac{\pi}{2}, \frac{\pi}{2}]
 \end{align*}
 
 \section{Order of Convergence}
@@ -248,8 +262,8 @@ open in MATLAB, screenshot)
 
 Function 2, Trapezoid Rule and Simpson's Rule cannot be used to approximate the integral
 because of a divide by zero. Gauss does not use the function directly in such a way
-that there is a divide by zero issue. This also demonstrates a worst-case scenario 
-when using Gauss - it's roughly linear. 
+that there is a divide by zero issue. This also demonstrates a worst-case scenario
+when using Gauss - it's roughly linear.
 
 Function 3, interesting for having Gauss be worse than Simpson's but still better than
 Trapezoid
@@ -263,8 +277,8 @@ there was no need to continue calculating.
 \section{References}
 
 \begin{enumerate}
-    \item https://www.math.umd.edu/~mariakc/AMSC466/LectureNotes/quadrature.pdf, page 22 error estimates
-    \item Numerical Analysis, Richard L. Burden, J. Douglas Faires, etc.
+	\item "https://www.math.umd.edu/~mariakc/AMSC466/LectureNotes/quadrature.pdf", page 22 error estimates
+	\item Numerical Analysis, Richard L. Burden, J. Douglas Faires, etc.
 \end{enumerate}
 
 
