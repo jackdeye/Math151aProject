@@ -189,48 +189,73 @@ analysing and comparing the approximations. For each quadrature and function, we
 the approximation and the analytical solution, as well as the order of convergence. Below is a table of our results.
 
 \begin{center}
-	\begin{footnotesize}
-	\begin{tabular}{| l | l | r | r | r | r |}
+	\begin{small}
+	\begin{tabular}{| l | l | p{25mm} | p{17mm} | p{35mm} |}
 		\hline
-		Function & Method & Ending Accuracy & Terminated & Order of Convergence\\
+		Function & Method & Final Absolute Error & Terminated Early & Order of Convergence\\
 		\hline
-		$f(x) = \frac{1}{1 + 1000(x - 0.5)^2}$ & Trapezoid Rule & a & a & a\\
+		F1 & Trapezoid Rule & $3.88475 \times 10^{-7}$ & No & Non-Polynomial\\
 		\hline
-		$f(x) = \frac{1}{1 + 1000(x - 0.5)^2}$ & Simpson's Rule & a & a & a\\
+		F1 & Simpson's Rule & $2.33869 \times 10^{-5}$ & No & $O(n^{2.32})$\\
 		\hline
-		$f(x) = \frac{1}{1 + 1000(x - 0.5)^2}$ & Gaussian Quadrature & a & a & a\\
+		F1 & Gaussian Quadrature & $7.56489 \times 10^{-6}$ & No & Non-Polynomial\\
 		\hline
-		$f(x) = \frac{1}{x}\sqrt{\frac{1 + x}{1 - x}}\log(\frac{2x^2 + 2x + 1}{2x^2 - 2x + 1})$ & Trapezoid Rule & a & a & a\\
+		F2 & Trapezoid Rule & N/A & N/A & N/A\\
 		\hline
-		$f(x) = \frac{1}{x}\sqrt{\frac{1 + x}{1 - x}}\log(\frac{2x^2 + 2x + 1}{2x^2 - 2x + 1})$ & Simpson's Rule & a & a & a\\
+		F2 & Simpson's Rule & N/A & N/A & N/A\\
 		\hline
-		$f(x) = \frac{1}{x}\sqrt{\frac{1 + x}{1 - x}}\log(\frac{2x^2 + 2x + 1}{2x^2 - 2x + 1})$ & Gaussian Quadrature & a & a & a\\
+		F2 & Gaussian Quadrature & $0.348133$ & No & $O(n^{0.79})$\\
 		\hline
-		$f(x) = \sqrt{|x|}$ & Trapezoid Rule & a & a & a\\
+		F3 & Trapezoid Rule & $0.0015914$ & No & $O(n^{1.22})$\\
 		\hline
-		$f(x) = \sqrt{|x|}$ & Simpson's Rule & a & a & a\\
+		F3 & Simpson's Rule & $0.000641819$ & No & $O(n^{1.59})$\\
 		\hline
-		$f(x) = \sqrt{|x|}$ & Gaussian Quadrature & a & a & a\\
+		F3 & Gaussian Quadrature & $0.000938918$ & No & $O(n^{1.21})$\\
 		\hline
-		$f(x) = \frac{1}{1 + x^2}$ & Trapezoid Rule & a & a & a\\
+		F4 & Trapezoid Rule & $6.51042 \times 10^{-6}$ & No & $O(n^{1.69})$\\
 		\hline
-		$f(x) = \frac{1}{1 + x^2}$ & Simpson's Rule & a & a & a\\
+		F4 & Simpson's Rule & $3.77476 \times 10^{-14}$ & No & $O(n^{5.66})$\\
 		\hline
-		$f(x) = \frac{1}{1 + x^2}$ & Gaussian Quadrature & a & a & a\\
+		F4 & Gaussian Quadrature & $0$ & $n = 14$ & $O(n^{11.36})$\\
 		\hline
-		$f(x) = \cos x$ & Trapezoid Rule & a & a & a\\
+		F5 & Trapezoid Rule & $0.000257028$ & No & $O(n^{1.70})$\\
 		\hline
-		$f(x) = \cos x$ & Simpson's Rule & a & a & a\\
+		F5 & Simpson's Rule & $-2.64288 \times 10^{-8}$ & No & $O(n^{3.45})$\\
 		\hline
-		$f(x) = \cos x$ & Gaussian Quadrature & a & a & a\\
+		F5 & Gaussian Quadrature & $0$ & $n = 12$ & $O(n^{13.02})$\\
 		\hline
 	\end{tabular}
-	\end{footnotesize}
+	\end{small}
 \end{center}
+
+\begin{align*}
+	&\text{Integrals:}\\
+	&\text{F1: }f(x) = \frac{1}{1 + 1000(x - 0.5)^2}, \quad [0, 1]\\
+	&\text{F2: }f(x) = \frac{1}{x}\sqrt{\frac{1 + x}{1 - x}}\ln\left(\frac{2x^2 + 2x + 1}{2x^2 - 2x + 1}\right), \quad [-1, 1]\\
+	&\text{F3: }f(x) = \sqrt{|x|}, \quad [-1, 1]\\
+	&\text{F4: }f(x) = \frac{1}{1 + x^2}, \quad [0, 1]\\
+	&\text{F5: }f(x) = \cos(x), \quad [-\frac{\pi}{2}, \frac{\pi}{2}]
+\end{align*}
 
 \section{Order of Convergence}
 
-\section{Chebyshev-Gauss Weights}
+Talking points:
+
+Function 1, Order of convergence Trapezoid $>$ Gauss $>$ Simpsons (look at log graph)
+What does non-polynomial mean? The order of convergence of the function cannot be
+expressed in the form of $O(n^m)$, m some real number. Show figures (see data folder,
+open in MATLAB, screenshot)
+
+Function 2, Trapezoid Rule and Simpson's Rule cannot be used to approximate the integral
+because of a divide by zero. Gauss does not use the function directly in such a way
+that there is a divide by zero issue. This also demonstrates a worst-case scenario 
+when using Gauss - it's roughly linear. 
+
+Function 3, interesting for having Gauss be worse than Simpson's but still better than
+Trapezoid
+
+Function 4, Gauss was really good; we got to within machine precision ($2^52$) when $n = 14$ - so
+there was no need to continue calculating.
 
 \section{Conclusion}
 
