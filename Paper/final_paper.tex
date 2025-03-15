@@ -170,6 +170,113 @@ Resulting in a formula of:
 	\int_{a}^{b}f(x) \approx \frac{b-a}{2}\sum_{i=1}^{n}w_{i}f \left(\frac{b-a}{2}x_{i}+\frac{a+b}{2} \right)
 \end{equation}
 
+\section{Error Estimate and Theoretical Convergence}
+For order of convergence, we will begin with some theoretical results.
+\\
+\subsection{Properties of Gaussian-Legendre Polynomials}
+
+In order to prove the error estimate for Gaussian-Legendre Polynomials, we need to use the properties below, which are in the Brief Overview and Developing Gaussian Quadrature sections. Note that Gaussian-Legendre Polynomials have the conditions that $[a, b] = [-1, 1]$, so the below is the Gaussian-Legendre approximation.
+\begin{equation}
+    \int_a^b f(x) \, dx \approx \sum_{i=1}^n w_i f(x_i)
+\end{equation}
+We will denote the right hand side approximation as $G(f)$. 
+We will also use the fact that the weights, $w_i$, are the integral of the Lagrangian from a to b, which is -1 to 1, which was shown in the Developing Gaussian Quadrature Section.
+\begin{equation}
+    w_{i}=\int_{-1}^{1}\prod_{{j=1 \\j \ne i}}^{n} \frac{x-x_{j}}{x_{i}-x_{j}}\,dx
+\end{equation}
+
+
+\subsection{Gaussian-Legendre Quadrature Error Estimate}
+
+Let $P_n(x)$ denote the Legendre polynomial of degree n. Let $x_i$ for $i = 1,\dots,n$ be the roots of $P_n(x)$. \\
+We will prove the following.
+Let $f \in C^{2n}[-1,1]$. Then there exists $c \in (-1,1)$ such that
+\begin{equation}
+    \int_{-1}^{1} f(x)dx = G(f) + \frac{f^{(2n)}(c)}{(2n)!}\int_{-1}^{1} P_n^2(x)dx,
+\end{equation}
+where G(f) is
+\begin{equation}
+    G(f) = \sum_{i=1}^n w_i f(x_i)
+\end{equation}
+Notice that G(f) is the same as in the section above.
+
+
+\begin{proof}
+We will use Hermite polynomials to justify the error estimate for Gaussian quadrature. Let $H_{2n-1}(x)$ denote a polynomial of degree $2n - 1$ such that
+\begin{align*}
+    H_{2n-1}(x_i) &= f(x_i) \\
+    H'_{2n-1}(x_i) &= f'(x_i)
+\end{align*}
+From Hermite interpolation, we know such polynomial exists and is unique.
+The difference between $f(x)$ and a Hermite polynomial $H_{n}(x)$ is 
+\begin{equation}
+    f(x) = H_{n}(x) + \frac{f^{(n+1)}(\xi(x))}{(n)!} \prod_{i=1}^{m}(x - x_i)^{k_i}.
+\end{equation}
+for some $\xi(x) \in (a, b)$, where n is the degree of the Hermite polynomial, m is the number of $x_i$ and ${k_i}$ is the known number derivatives of ${x_i}$ for $i = 1, \dots, n$ \\
+For $H_{2n-1}(x)$, we know two derivatives at each $x_i$ for $i = 1, \dots, n$, so $k = 2$, and the following holds for some $\xi(x) \in (a, b)$
+\begin{equation}
+    f(x) = H_{2n-1}(x) + \frac{f^{(2n)}(\xi)}{(2n)!} \prod_{i=1}^{n}(x - x_i)^2
+\end{equation}
+We can see that $(x - x_1)\dots(x - x_n)$ is $P_n(x)$ with roots $x_i$ for $i \in 1,\dots,n$. So taking the integral from -1 to 1 of the equation above yields
+\begin{equation}
+    \int_{-1}^{1} f(x)dx = \int_{-1}^{1} H_{2n-1}(x)dx + \int_{-1}^{1}\frac{f^{(2n)}(\xi)}{(2n)!} P_n^2(x)dx
+\end{equation}
+From the 2n-1 degree precision of the Gaussian Quadrature, we get the following
+\begin{equation}
+    \int_{-1}^{1} H_{2n-1}(x)dx = G(H_{2n-1})
+\end{equation}
+Then using the definition of G, we get
+\begin{equation}
+    G(H_{2n-1}) = \sum_{i=1}^{n} H_{2n-1}(x_i)
+\end{equation}
+Lastly, since $H_{2n-1}(x)$ interpolates $f(x)$, the following summation holds
+\begin{equation}
+   \sum_{i=1}^{n} H_{2n-1}(x_i) = \sum_{i=1}^{n} f(x_i) = G(f).
+\end{equation}
+Combining the previous three equations yields
+\begin{equation}
+    \int_{-1}^{1} H_{2n-1}(x)dx = G(f)
+\end{equation}
+Since $P_n^2(x)$ is nonnegative, we can use Mean Value Theorem to conclude
+\begin{equation}
+    \int_{-1}^{1} \frac{f^{(2n)}(\xi(x))}{(2n)!} P_n^2(x)dx = \frac{f^{(2n)}(c)}{(2n)!} \int_{-1}^{1} P_n^2(x)dx
+\end{equation}
+for some $c \in (-1,1)$. 
+\\
+Substituting the right hand sides of the two equations above, we can conclude
+\begin{equation}
+    \int_{-1}^{1} f(x)dx = G(f) + \frac{f^{(2n)}(c)}{(2n)!}\int_{-1}^{1} P_n^2(x)dx
+\end{equation}
+completing the proof.
+
+\end{proof}
+
+\subsection{Implications of Error Estimate on When To Use Gaussian Quadrature}
+As we can see from the error estimate, Gaussian-Legendre Quadrature has a strong order of convergence as sene with the inclusion of the factorial term that grows quickly as well as the integral of the squared Legendre- polynomial having a strong order of convergence. 
+\\
+\\
+The main conditions are $f \in C^{2n}[-1,1]$ and the integral being from -1 to 1.
+\\
+\\
+The proof above generalizes to Gaussian Quadrature on [a,b], so the second condition is not much of an issue with the following result where w(x) is no longer equal to 1.
+\\
+\\
+Note that the $P_n(x)$ used below is more restrictive than the Legendre polynomial. For more robust analysis on this general form, see page 22 of this source on page 22:
+\\
+(https://www.math.umd.edu/~mariakc/AMSC466/LectureNotes/quadrature.pdf)
+
+\begin{equation}
+    \int_a^b f(x)w(x)dx = Q(f) + \frac{f^{(2n)}(c)}{(2n)!} \int_a^b p_n^2(x)w(x)dx
+\end{equation}
+Then it follows in general that the extremely strong order of convergence for Gaussian Quadratures, including Gaussian-Legendre Quadratures, can be taken advantage of as long as we have highly smooth functions.
+\\
+\\
+In the experimental section, we will try a variety of functions to see how Gaussian Quadrature performs relative to other Quadratures such as Trapezoidal Rule.
+\\
+\\
+Based on the theoretical results above, for smooth functions, we should see Gaussian Quadrature dominates most quadratures.
+
+
 \section{Comparison of Quadrature}
 
 % \subsection{Composite Trapezoid Rule MATLAB Code}
@@ -251,140 +358,51 @@ the approximation and the analytical solution, as well as the order of convergen
 	 & \text{F5: }f(x) = \cos(x), \quad [-\frac{\pi}{2}, \frac{\pi}{2}]
 \end{align*}
 
-\section{Order of Convergence}
+\section{Experimental Order of Convergence}
 
-\subsection*{Error Estimate and Fast Convergence of Gaussian Quadrature}
-For order of convergence, we will begin with some theoretical results.
-\\
-\subsubsection*{Properties of Gaussian-Legendre Polynomials}
+\subsection*{Comparing Gaussian Quadrature to Trapezoidal Rule and Simpsons Rule}
+Using the functions and results from section 3 directly above,  we will analyze how Gaussian Quadrature performed.
 
-In order to prove the error estimate for Gaussian-Legendre Polynomials, we need to use the properties below, which are in the Brief Overview and Developing Gaussian Quadrature sections. Note that Gaussian-Legendre Polynomials have the conditions that $[a, b] = [-1, 1]$, so the below is the Gaussian-Legendre approximation.
-\begin{equation}
-    \int_a^b f(x) \, dx \approx \sum_{i=1}^n w_i f(x_i)
-\end{equation}
-We will denote the right hand side approximation as $G(f)$. 
-We will also use the fact that the weights, $w_i$, are the integral of the Lagrangian from a to b, which is -1 to 1, which was shown in the Developing Gaussian Quadrature Section.
-\begin{equation}
-    w_{i}=\int_{-1}^{1}\prod_{{j=1 \\j \ne i}}^{n} \frac{x-x_{j}}{x_{i}-x_{j}}\,dx
-\end{equation}
+\subsubsection{Function 1}
 
+As seen in the table, Function 1 based on performance by order of convergence has Trapezoid Rule $>$ Gaussian Quadrature $>$ Simpson's Rule. This case has a unique non-polynomial order of convergence for Trapezoid and Gaussian Quadrature. This means that they do not have the form of $O(n^m)$, where m is a real number. In this case, we can look at the log graph below. 
 
-\subsubsection*{Gaussian-Legendre Quadrature Error Estimate}
+\begin{figure}
+    NEED TO ADD THE FIGURE
+\end{figure}
 
-Let $P_n(x)$ denote the Legendre polynomial of degree n. Let $x_i$ for $i = 1,\dots,n$ be the roots of $P_n(x)$. \\
-We will prove the following.
-Let $f \in C^{2n}[-1,1]$. Then there exists $c \in (-1,1)$ such that
-\begin{equation}
-    \int_{-1}^{1} f(x)dx = G(f) + \frac{f^{(2n)}(c)}{(2n)!}\int_{-1}^{1} P_n^2(x)dx,
-\end{equation}
-where G(f) is
-\begin{equation}
-    G(f) = \sum_{i=1}^n w_i f(x_i)
-\end{equation}
-Notice that G(f) is the same as in the section above.
+The main thing to notice is that the log graph does not appear linear or constant, and as such, this means a polynomial form does not fit. It does not conform to any type of pattern that aligns with a $O(n^m)$ form, but we can see that the Gaussian Quadrature did perform well based on the error being better than Simpson's Rule. This suggests that the non-polynomial order of convergence is still strong in this case and at least beats out $O(n^{2.32})$, so it is better than at least some polynomial order of convergences.
 
+Trapezoid Rule performing better than Gaussian Quadrature is surprising to see in the errors, but this anomaly makes sense due to the function not conforming to neatly polynomial based integration.
 
-\begin{proof}
-We will use Hermite polynomials to justify the error estimate for Gaussian quadrature. Let $H_{2n-1}(x)$ denote a polynomial of degree $2n - 1$ such that
-\begin{align*}
-    H_{2n-1}(x_i) &= f(x_i) \\
-    H'_{2n-1}(x_i) &= f'(x_i)
-\end{align*}
-From Hermite interpolation, we know such polynomial exists and is unique.
-The difference between $f(x)$ and a Hermite polynomial $H_{n}(x)$ is 
-\begin{equation}
-    f(x) = H_{n}(x) + \frac{f^{(n+1)}(\xi(x))}{(n)!} \prod_{i=1}^{m}(x - x_i)^{k_i}.
-\end{equation}
-for some $\xi(x) \in (a, b)$, where n is the degree of the Hermite polynomial, m is the number of $x_i$ and ${k_i}$ is the known number derivatives of ${x_i}$ for $i = 1, \dots, n$ \\
-For $H_{2n-1}(x)$, we know two derivatives at each $x_i$ for $i = 1, \dots, n$, so $k = 2$, and the following holds for some $\xi(x) \in (a, b)$
-\begin{equation}
-    f(x) = H_{2n-1}(x) + \frac{f^{(2n)}(\xi)}{(2n)!} \prod_{i=1}^{n}(x - x_i)^2
-\end{equation}
-We can see that $(x - x_1)\dots(x - x_n)$ is $P_n(x)$ with roots $x_i$ for $i \in 1,\dots,n$. So taking the integral from -1 to 1 of the equation above yields
-\begin{equation}
-    \int_{-1}^{1} f(x)dx = \int_{-1}^{1} H_{2n-1}(x)dx + \int_{-1}^{1}\frac{f^{(2n)}(\xi)}{(2n)!} P_n^2(x)dx
-\end{equation}
-From the 2n-1 degree precision of the Gaussian Quadrature, we get the following
-\begin{equation}
-    \int_{-1}^{1} H_{2n-1}(x)dx = G(H_{2n-1})
-\end{equation}
-Then using the definition of G, we get
-\begin{equation}
-    G(H_{2n-1}) = \sum_{i=1}^{n} H_{2n-1}(x_i)
-\end{equation}
-Lastly, since $H_{2n-1}(x)$ interpolates $f(x)$, the following summation holds
-\begin{equation}
-   \sum_{i=1}^{n} H_{2n-1}(x_i) = \sum_{i=1}^{n} f(x_i) = G(f).
-\end{equation}
-Combining the previous three equations yields
-\begin{equation}
-    \int_{-1}^{1} H_{2n-1}(x)dx = G(f)
-\end{equation}
-Since $P_n^2(x)$ is nonnegative, we can use Mean Value Theorem to conclude
-\begin{equation}
-    \int_{-1}^{1} \frac{f^{(2n)}(\xi(x))}{(2n)!} P_n^2(x)dx = \frac{f^{(2n)}(c)}{(2n)!} \int_{-1}^{1} P_n^2(x)dx
-\end{equation}
-for some $c \in (-1,1)$. 
-\\
-Substituting the right hand sides of the two equations above, we can conclude
-\begin{equation}
-    \int_{-1}^{1} f(x)dx = G(f) + \frac{f^{(2n)}(c)}{(2n)!}\int_{-1}^{1} P_n^2(x)dx
-\end{equation}
-completing the proof.
+\subsubsection{Function 2}
 
-\end{proof}
+For Function 2, the property of the function leads to a division by zero preventing the use of Trapezoid and Simpson Rules. This is a situation where Gaussian Quadrature shines as it does not run into this issue due to the formulation; hence, it can still compute the integral. 
 
-\subsubsection{Implications of Error Estimate on When To Use Gaussian Quadrature}
-As we can see from the error estimate, Gaussian-Legendre Quadrature has a strong order of convergence as sene with the inclusion of the factorial term that grows quickly as well as the integral of the squared Legendre- polynomial having a strong order of convergence. 
-\\
-\\
-The main conditions are $f \in C^{2n}[-1,1]$ and the integral being from -1 to 1.
-\\
-\\
-The proof above generalizes to Gaussian Quadrature on [a,b], so the second condition is not much of an issue with the following result where w(x) is no longer equal to 1.
-\\
-\\
-Note that the $P_n(x)$ used below is more restrictive than the Legendre polynomial. For more robust analysis on this general form, see page 22 of this source on page 22:
-\\
-(https://www.math.umd.edu/~mariakc/AMSC466/LectureNotes/quadrature.pdf)
+This function is also the worst type of Gaussian Quadrature performance since it only exhibits a close to linear order of convergence. Considering Gaussian Quadrature performs well when functions are smooth, this makes sense as Function 2 is not continuous, which is easily seen with the $\frac{1}{x}$ term.
 
-\begin{equation}
-    \int_a^b f(x)w(x)dx = Q(f) + \frac{f^{(2n)}(c)}{(2n)!} \int_a^b p_n^2(x)w(x)dx
-\end{equation}
-Then it follows in general that the extremely strong order of convergence for Gaussian Quadratures, including Gaussian-Legendre Quadratures, can be taken advantage of as long as we have highly smooth functions.
-\\
-\\
-In the experimental section, we will try a variety of functions to see how Gaussian Quadrature performs relative to other Quadratures such as Trapezoidal Rule.
-\\
-\\
-Based on the theoretical results above, for smooth functions, we should see Gaussian Quadrature dominates most quadratures.
+\subsubsection{Function 3}
 
+In this case, Gaussian Quadrature performed worse than Simpson's Rule, but beat Trapezoid Rule as seen by the errors in the table. This shows that in some cases Simpson's Rule can be quite effective, especially when smoothness does not hold, and there is low differentiability. In this case, the absolute value leads to non-differentiability at $x = 0$, which is in the interval of interest.
 
+\subsubsection{Function 4}
 
+This case shows why Gaussian Quadrature is powerful as the error is 0, meaning it is lower than machine epsilon, which is $2^{-52}$ for context. This aligns with the exactness of Gaussian Quadrature on highly differentiable polynomials property seen in the theoretical results. This is much better than Trapezoid and Simpson's Rules as well. The termination is also in 14 iterations, which is impressive.
 
+\subsubsection {Function 5}
 
-
-
-
-Talking points:
-
-Function 1, Order of convergence Trapezoid $>$ Gauss $>$ Simpsons (look at log graph)
-What does non-polynomial mean? The order of convergence of the function cannot be
-expressed in the form of $O(n^m)$, m some real number. Show figures (see data folder,
-open in MATLAB, screenshot)
-
-Function 2, Trapezoid Rule and Simpson's Rule cannot be used to approximate the integral
-because of a divide by zero. Gauss does not use the function directly in such a way
-that there is a divide by zero issue. This also demonstrates a worst-case scenario
-when using Gauss - it's roughly linear.
-
-Function 3, interesting for having Gauss be worse than Simpson's but still better than
-Trapezoid
-
-Function 4, Gauss was really good; we got to within machine precision ($2^52$) when $n = 14$ - so
-there was no need to continue calculating.
+Here is another situation where Gaussian Quadrature properties lead to zero error, beating out machine epsilon once again. An impressive iteration count of 12 was also achieved to termination. This demonstrates once again how smooth functions with strong polynomial approximations, which is true due to the Taylor expansion of cosine, yields exact results. We should also note that in this case, we are extending outside of the Legendre polynomials as the interval includes values outside -1 and 1.
 
 \section{Conclusion}
+
+Overall, Gaussian Quadrature is a powerful method for integral approximation. It can compete with other quadratures such as Trapezoid and Simpson's, often out-performing them due to its impressive order of convergence as seen in the proof of error estimates. The main drawbacks are for cases where functions are not approximated well as polynomials, which leads to poor results. Outside of that, Gaussian Quadrature is able to yield a result when there is division by zero issues for other quadratures and can still get an average estimate even with a few discontinuities. One of the best features of Gaussian Quadrature is exactness for polynomials based on differentiability. This means that functions with strong polynomial approximations, which are smooth are guaranteed to have highly precise estimates over short iteration counts. Simply put, the exactness property of Gaussian Quadratures make it an excellent choice for approximating integrals, especially with high differentiability and close polynomial approximations.
+
+
+
+
+\section{Conclusion}
+
+Overall, Gaussian Quadrature is a powerful method for integral approximation. It can compete with other quadratures such as Trapezoid and Simpson's, often out-performing them due to its impressive order of convergence as seen in the proof of error estimates. The main drawbacks are for cases where functions are not approximated well as polynomials, which leads to poor results. Outside of that, Gaussian Quadrature is able to yield a result when there is division by zero issues for other quadratures and can still get an average estimate even with a few discontinuities. One of the best features of Gaussian Quadrature is exactness for polynomials based on differentiability. This means that functions with strong polynomial approximations, which are smooth are guaranteed to have highly precise estimates over short iteration counts. Simply put, the exactness property of Gaussian Quadratures make it an excellent choice for approximating integrals, especially with high differentiability and close polynomial approximations.
 
 \newpage
 \section{References}
