@@ -21,6 +21,9 @@
 \begin{document}
 \maketitle
 
+\section*{Error Estimate and Fast Convergence of Gaussian Quadrature}
+For order of convergence, we will begin with some theoretical results.
+\\
 \section*{Properties of Gaussian-Legendre Polynomials}
 
 In order to prove the error estimate for Gaussian-Legendre Polynomials, we need to use the properties below, which are in the Brief Overview and Developing Gaussian Quadrature sections. Note that Gaussian-Legendre Polynomials have the conditions that $[a, b] = [-1, 1]$, so the below is the Gaussian-Legendre approximation.
