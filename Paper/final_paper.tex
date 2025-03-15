@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage{amsmath} % For advanced math symbols
+\usepackage{amsthm}
 \usepackage{amsfonts} % For math fonts
 \usepackage{amssymb} % Additional math symbols
 \usepackage{geometry} % To adjust page margins
@@ -295,7 +296,7 @@ Based on the theoretical results above, for smooth functions, we should see Gaus
 	\begin{minipage}[b]{0.45\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{../images/Evenly_spaced.png} % Replace with the path to your first image
-		\caption{Simpson and Trapezoid, evenly spacing for $\cos x$}
+		\caption{Simpson and Trapezoid, even spacing for $\cos x$}
 	\end{minipage}
 	\hfill
 	\begin{minipage}[b]{0.45\textwidth}
@@ -306,7 +307,7 @@ Based on the theoretical results above, for smooth functions, we should see Gaus
 \end{figure}
 
 We applied Trapezoid Rule, Simpson's Rule, and Gaussian Quadrature to a series of five functions for the purpose of
-analysing and comparing the approximations. For each quadrature and function, we calculated the difference between
+analysing and comparing the approximations. For each quadrature and function, we calculated the absolute error between
 the approximation and the analytical solution, as well as the order of convergence. Below is a table of our results.
 
 \begin{center}
@@ -358,44 +359,99 @@ the approximation and the analytical solution, as well as the order of convergen
 	 & \text{F5: }f(x) = \cos(x), \quad [-\frac{\pi}{2}, \frac{\pi}{2}]
 \end{align*}
 
-\section{Experimental Order of Convergence}
-
-\subsection*{Comparing Gaussian Quadrature to Trapezoidal Rule and Simpsons Rule}
-Using the functions and results from section 3 directly above,  we will analyze how Gaussian Quadrature performed.
+\section{Anslysis of Order of Convergence}
 
 \subsubsection{Function 1}
 
-As seen in the table, Function 1 based on performance by order of convergence has Trapezoid Rule $>$ Gaussian Quadrature $>$ Simpson's Rule. This case has a unique non-polynomial order of convergence for Trapezoid and Gaussian Quadrature. This means that they do not have the form of $O(n^m)$, where m is a real number. In this case, we can look at the log graph below. 
+As seen in the table, Trapezoid Rule outperformed Gaussian Quadrature, both of
+outperformed Simpson's Rule. This case has a
+unique non-polynomial order of convergence for Trapezoid and Gaussian
+Quadrature. This means that they do not have the form of $O(n^m)$, where m is a
+real number. In this case, we can look at figure 3 below. 
 
-\begin{figure}
-    NEED TO ADD THE FIGURE
+\begin{figure}[htbp]
+	\centering
+	\begin{minipage}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{../images/CT-f1-logspace.png} % Replace with the path to your first image
+		\caption{Log graph of Composite Trapezoid on Function 1, indicating non-polynomial convergence.}
+	\end{minipage}
 \end{figure}
 
-The main thing to notice is that the log graph does not appear linear or constant, and as such, this means a polynomial form does not fit. It does not conform to any type of pattern that aligns with a $O(n^m)$ form, but we can see that the Gaussian Quadrature did perform well based on the error being better than Simpson's Rule. This suggests that the non-polynomial order of convergence is still strong in this case and at least beats out $O(n^{2.32})$, so it is better than at least some polynomial order of convergences.
+The main thing to notice is that the log graph does not appear linear or
+constant, and as such, this means a polynomial form does not fit. It does not
+conform to any type of pattern that aligns with a $O(n^m)$ form, but we can see 
+that the Gaussian Quadrature did perform well after $n = 80$ based on the Final
+absolute error being better than Simpson's Rule. This suggests that the non-polynomial order of
+convergence gets stronger as $n$ increases.
 
-Trapezoid Rule performing better than Gaussian Quadrature is surprising to see in the errors, but this anomaly makes sense due to the function not conforming to neatly polynomial based integration.
+Trapezoid Rule performing better than Gaussian Quadrature is surprising to see 
+in the errors, but this anomaly makes sense due to the function not conforming 
+to neatly polynomial based integration.
 
 \subsubsection{Function 2}
 
-For Function 2, the property of the function leads to a division by zero preventing the use of Trapezoid and Simpson Rules. This is a situation where Gaussian Quadrature shines as it does not run into this issue due to the formulation; hence, it can still compute the integral. 
+For Function 2, the property of the function leads to a division by zero 
+preventing the use of Trapezoid and Simpson Rules. This is a situation where 
+Gaussian Quadrature shines as it does not run into this issue due to the 
+formulation; hence, it can still compute the integral. 
 
-This function is also the worst type of Gaussian Quadrature performance since it only exhibits a close to linear order of convergence. Considering Gaussian Quadrature performs well when functions are smooth, this makes sense as Function 2 is not continuous, which is easily seen with the $\frac{1}{x}$ term.
+This function is also the worst type of Gaussian Quadrature performance since 
+it only exhibits a close to linear order of convergence. Considering Gaussian 
+Quadrature performs well when functions are smooth, this makes sense as 
+Function 2 is not continuous, which is easily seen with the $\frac{1}{x}$ term.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{minipage}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{../images/GQ-f2-logspace.png} % Replace with the path to your first image
+		\caption{Log graph of Gaussian Quadrature on Function 2, indicating polynomial convergence. In this case, $O(n^{0.79})$.}
+	\end{minipage}
+\end{figure}
 
 \subsubsection{Function 3}
 
-In this case, Gaussian Quadrature performed worse than Simpson's Rule, but beat Trapezoid Rule as seen by the errors in the table. This shows that in some cases Simpson's Rule can be quite effective, especially when smoothness does not hold, and there is low differentiability. In this case, the absolute value leads to non-differentiability at $x = 0$, which is in the interval of interest.
+On Function 3, Gaussian Quadrature performed worse than Simpson's Rule, but beat 
+Trapezoid Rule as seen by the errors in the table. This shows that in some 
+cases Simpson's Rule can be quite effective, especially when smoothness does 
+not hold, and there is low differentiability. In this case, the absolute value 
+leads to non-differentiability at $x = 0$, which is in the interval of interest.
 
 \subsubsection{Function 4}
 
-This case shows why Gaussian Quadrature is powerful as the error is 0, meaning it is lower than machine epsilon, which is $2^{-52}$ for context. This aligns with the exactness of Gaussian Quadrature on highly differentiable polynomials property seen in the theoretical results. This is much better than Trapezoid and Simpson's Rules as well. The termination is also in 14 iterations, which is impressive.
+Function 4 shows why Gaussian Quadrature is powerful as the absolute error is zero after $n = 14$,
+meaning it is less than machine epsilon, which is $2^{-52}$ in MATLAB. This aligns 
+with the exactness of Gaussian Quadrature on highly differentiable polynomials 
+property seen in the theoretical results. This is much better than Trapezoid 
+and Simpson's Rules as well. 
+
+\begin{figure}[htbp]
+	\centering
+	\begin{minipage}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{../images/GQ-f4-linspace.png} % Replace with the path to your first image
+		\caption{Linear graph of Gaussian Quadrature Absolute Error on Function 4, indicating very quick convergence and the effectiveness of Gaussian Quadrature on simpler functions.}
+	\end{minipage}
+\end{figure}
 
 \subsubsection {Function 5}
 
-Here is another situation where Gaussian Quadrature properties lead to zero error, beating out machine epsilon once again. An impressive iteration count of 12 was also achieved to termination. This demonstrates once again how smooth functions with strong polynomial approximations, which is true due to the Taylor expansion of cosine, yields exact results. We should also note that in this case, we are extending outside of the Legendre polynomials as the interval includes values outside -1 and 1.
+Here is another situation where Gaussian Quadrature properties lead to zero 
+error after $n = 12$, becoming less than machine epsilon once again. This demonstrates 
+once again how smooth and simple functions that can be approximated accurately with 
+polynomials, yields exact results.
 
 \section{Conclusion}
 
-Overall, Gaussian Quadrature is a powerful method for integral approximation. It can compete with other quadratures such as Trapezoid and Simpson's, often out-performing them due to its impressive order of convergence as seen in the proof of error estimates. The main drawbacks are for cases where functions are not approximated well as polynomials, which leads to poor results. Outside of that, Gaussian Quadrature is able to yield a result when there is division by zero issues for other quadratures and can still get an average estimate even with a few discontinuities. One of the best features of Gaussian Quadrature is exactness for polynomials based on differentiability. This means that functions with strong polynomial approximations, which are smooth are guaranteed to have highly precise estimates over short iteration counts. Simply put, the exactness property of Gaussian Quadratures make it an excellent choice for approximating integrals, especially with high differentiability and close polynomial approximations.
+Gaussian Quadrature is a powerful method for integral approximation. 
+It can compete with other quadratures such as Trapezoid and Simpson's, often 
+out-performing them due to its impressive order of convergence. The main drawbacks are for cases where functions are 
+not approximated well as polynomials, which leads to poor results. Outside of 
+that, Gaussian Quadrature is able to yield results when there are discontinuities. One of the best features of Gaussian Quadrature is 
+exactness for polynomials based on differentiability. This means that functions 
+with strong polynomial approximations, which are smooth are guaranteed to have 
+highly precise estimates over short iteration counts. Simply put, the exactness 
+property of Gaussian Quadratures make it an excellent choice for approximating 
+integrals, especially with high differentiability and close polynomial 
+approximations.
 
 
 \newpage
